@@ -4,9 +4,9 @@ import "../styles/PhotoListItem.scss";
 
 const PhotoListItem = (props) => {
   return(
-    <div className="PhotoListItem">
-    <img src={props.imageSource} />
-  </div>
+    <div className="photo-list__item">
+      <img src={props.imageSource} />
+    </div>
   )
 };
 
