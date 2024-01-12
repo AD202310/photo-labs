@@ -5,15 +5,18 @@ import TopNavigation from './TopNavigation';
 
 
 const HomeRoute = (props) => {
-  const [favoritePhotos, setFavoritePhotos] = useState([]);
 
+  const [favoritePhotos, setFavoritePhotos] = useState([]);
+  
   const handleToggleFavorite = (photoId) => {
-    const isFavorite = favoritePhotos.includes(photoId);
-    if (isFavorite) {
-      setFavoritePhotos(favoritePhotos.filter(id => id !== photoId));
-    } else {
-      setFavoritePhotos([...favoritePhotos, photoId]);
-    }
+    setFavoritePhotos(prevFavorites => {
+      const isFavorite = prevFavorites.includes(photoId);
+      if (isFavorite) {
+        return prevFavorites.filter(id => id !== photoId);
+      } else {
+        return [...prevFavorites, photoId];
+      }
+    });
   };
 
   console.log(favoritePhotos)
