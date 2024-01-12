@@ -7,23 +7,23 @@ import TopNavigation from './TopNavigation';
 const HomeRoute = (props) => {
 
   const [favoritePhotos, setFavoritePhotos] = useState([]);
-  
+
   const handleToggleFavorite = (photoId) => {
-    setFavoritePhotos(prevFavorites => {
-      const isFavorite = prevFavorites.includes(photoId);
-      if (isFavorite) {
-        return prevFavorites.filter(id => id !== photoId);
-      } else {
-        return [...prevFavorites, photoId];
-      }
-    });
+    if (favoritePhotos.includes(photoId)) {
+      setFavoritePhotos(favoritePhotos.filter(id => id !== photoId));
+    } else {
+      setFavoritePhotos([...favoritePhotos, photoId]);
+    }
   };
 
-  console.log(favoritePhotos)
+  console.log(favoritePhotos)    // TO BE REMOVED
 
   return (
     <div className="home-route">
-      <TopNavigation topics={props.topics} favoritePhotos={favoritePhotos}/>
+      <TopNavigation 
+        topics={props.topics} 
+        favoritePhotos={favoritePhotos}
+      />
       <PhotoList 
         photos={props.photos} 
         favoritePhotos={favoritePhotos} 
