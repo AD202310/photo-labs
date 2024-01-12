@@ -22,11 +22,7 @@ const App = () => {
       {photos.map((_, index) => (
         <PhotoListItem
           key={index}
-          city={sampleDataForPhotoListItem.location.city}
-          country={sampleDataForPhotoListItem.location.country}
-          imageSource={sampleDataForPhotoListItem.imageSource}
-          username={sampleDataForPhotoListItem.username}
-          profile={sampleDataForPhotoListItem.profile}
+          photo={sampleDataForPhotoListItem}
         />
       ))}
     </div>
