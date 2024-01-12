@@ -3,12 +3,17 @@ import FavIcon from './FavIcon';
 
 import '../styles/FavBadge.scss';
 
-const FavBadge = ({ isFavPhotoExist }) => {
+const FavBadge = ({ favoritePhotos }) => {
+  if (!favoritePhotos) {
+    return <div>Error: favoritePhotos is undefined</div>;
+  }
+  const hasFavorites = favoritePhotos.length > 0;
+
   return (
     <div className='fav-badge'>
-      <FavIcon displayAlert={!!isFavPhotoExist}/>
+      <FavIcon selected={hasFavorites} />
     </div>
-  ) 
+  );
 };
 
 export default FavBadge;
