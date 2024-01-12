@@ -3,7 +3,7 @@ import FavIcon from './FavIcon';
 
 import '../styles/FavBadge.scss';
 
-const FavBadge = ({ favoritePhotos }) => {
+const FavBadge = ({ favoritePhotos, displayAlert }) => {
   if (!favoritePhotos) {
     return <div>Error: favoritePhotos is undefined</div>;
   }
@@ -11,7 +11,10 @@ const FavBadge = ({ favoritePhotos }) => {
 
   return (
     <div className='fav-badge'>
-      <FavIcon selected={hasFavorites} />
+      <FavIcon 
+        selected={hasFavorites} 
+        displayAlert={displayAlert}
+      />
     </div>
   );
 };
