@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import '../styles/HomeRoute.scss'
 import PhotoList from './PhotoList';
-import TopNavigation from './TopNavigation';
+import TopNavigation from './TopNavigationBar';
 
 
 const HomeRoute = (props) => {
