@@ -16,8 +16,6 @@ const HomeRoute = (props) => {
     }
   };
 
-  console.log(favoritePhotos)    // TO BE REMOVED
-
   return (
     <div className="home-route">
       <TopNavigation 

@@ -10,7 +10,9 @@ const App = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
-  const openModal = (photo) => {;
+
+  const openModal = (photo) => {
+
     setSelectedPhoto(photo);
     setIsModalOpen(true);
   };
@@ -20,9 +22,14 @@ const App = () => {
     setIsModalOpen(false);
   };
 
+
   return (
     <>
-      <HomeRoute photos={mockPhotoData} topics={mockTopicData} onPhotoClick={openModal} />
+      <HomeRoute 
+        photos={mockPhotoData} 
+        topics={mockTopicData} 
+        onPhotoClick={(photo) => openModal(photo)} 
+      />
       {isModalOpen && <PhotoDetailsModal photo={selectedPhoto} onClose={closeModal} />}
     </>
   );
