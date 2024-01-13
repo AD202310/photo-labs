@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './App.scss';
 import './styles/TopNavigationBar.scss';
-import HomeRoute from 'components/HomeRoute';
+import HomeRoute from 'routes/HomeRoute';
 import PhotoDetailsModal from 'routes/PhotoDetailsModal';
 import mockPhotoData from 'mocks/photos';
 import mockTopicData from 'mocks/topics';
