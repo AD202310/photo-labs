@@ -5,8 +5,8 @@ import PhotoListItem from "./PhotoListItem";
 
 
 const PhotoList = (props) => {
-    if (!props.photos || !props.favoritePhotos) {
-      return <div>Error: Photos or favoritePhotos is undefined</div>;
+    if (!props.photos || !props.favoritePhotosArray) {
+      return <div>Error: Photos or favorite photos are undefined</div>;
     }
 
   return (
@@ -15,7 +15,7 @@ const PhotoList = (props) => {
         <PhotoListItem
           key={photoData.id}
           photo={photoData}
-          isFavorite={props.favoritePhotos.includes(photoData.id)}
+          isFavorite={props.favoritePhotosArray.includes(photoData.id)}
           onToggleFavorite={props.onToggleFavorite}
           onPhotoClick={props.onPhotoClick}
         />

@@ -1,31 +1,21 @@
-import React, { useState } from 'react'
-import '../styles/HomeRoute.scss'
+import React, { useState } from 'react';
+import '../styles/HomeRoute.scss';
 import PhotoList from '../components/PhotoList';
-import TopNavigation from '../components/TopNavigationBar';
-
+import TopNavigationBar from '../components/TopNavigationBar';
 
 const HomeRoute = (props) => {
 
-  const [favoritePhotos, setFavoritePhotos] = useState([]);
-
-  const handleToggleFavorite = (photoId) => {
-    if (favoritePhotos.includes(photoId)) {
-      setFavoritePhotos(favoritePhotos.filter(id => id !== photoId));
-    } else {
-      setFavoritePhotos([...favoritePhotos, photoId]);
-    }
-  };
 
   return (
     <div className="home-route">
-      <TopNavigation 
-        topics={props.topics} 
-        favoritePhotos={favoritePhotos}
+      <TopNavigationBar
+        topics={props.topics}
+        favoritePhotosArray={props.favoritePhotosArray}
       />
-      <PhotoList 
-        photos={props.photos} 
-        favoritePhotos={favoritePhotos} 
-        onToggleFavorite={handleToggleFavorite}
+      <PhotoList
+        photos={props.photos}
+        favoritePhotosArray={props.favoritePhotosArray}
+        onToggleFavorite={props.onToggleFavorite}
         onPhotoClick={props.onPhotoClick}
       />
     </div>
