@@ -1,36 +1,32 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.scss';
 import './styles/TopNavigationBar.scss';
 import HomeRoute from 'routes/HomeRoute';
 import PhotoDetailsModal from 'routes/PhotoDetailsModal';
 import photos from 'mocks/photos';
 import topics from 'mocks/topics';
+import useApplicationData from 'hooks/useApplicationData';
 
 const App = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPhoto, setSelectedPhoto] = useState(null);
-  const [favoritePhotosArray, setFavoritePhotosArray] = useState([]);
+  const { state, updateToFavPhotoIds, setPhotoSelected, onClosePhotoDetailsModal } = useApplicationData();
 
   const openModal = (photo) => {
-    setSelectedPhoto(photo);
-    setIsModalOpen(true);
+    setPhotoSelected(photo);
   };
 
   const closeModal = () => {
-    setSelectedPhoto(null);
-    setIsModalOpen(false);
+    onClosePhotoDetailsModal();
   };
 
   const handleToggleFavorite = (photoId) => {
-    if (favoritePhotosArray.includes(photoId)) {
-      setFavoritePhotosArray(favoritePhotosArray.filter(id => id !== photoId));
-    } else {
-      setFavoritePhotosArray([...favoritePhotosArray, photoId]);
-    }
+    const newFavoritePhotosArray = state.favoritePhotosArray.includes(photoId)
+      ? state.favoritePhotosArray.filter(id => id !== photoId)
+      : [...state.favoritePhotosArray, photoId];
+
+    updateToFavPhotoIds(newFavoritePhotosArray);
   };
 
-  console.log("APP Array: ", favoritePhotosArray)    // TO BE REMOVED !!! 
-
+     console.log("App/openModal/state:  ", state.favoritePhotosArray)           //REMOVE
 
   return (
     <>
@@ -38,15 +34,15 @@ const App = () => {
         photos={photos}
         topics={topics}
         onPhotoClick={(photo) => openModal(photo)}
-        favoritePhotosArray={favoritePhotosArray}
+        favoritePhotosArray={state.favoritePhotosArray}
         onToggleFavorite={(id) => handleToggleFavorite(id)}
       />
-      {isModalOpen &&
+      {state.isModalOpen &&
         <PhotoDetailsModal
-          selectedPhoto={selectedPhoto}
+          selectedPhoto={state.selectedPhoto}
           closeModal={closeModal}
           photos={photos}
-          favoritePhotosArray={favoritePhotosArray}
+          favoritePhotosArray={state.favoritePhotosArray}
           onToggleFavorite={(id) => handleToggleFavorite(id)}
         />
       }
