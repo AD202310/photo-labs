@@ -5,6 +5,14 @@ import closeSymbol from '../assets/closeSymbol.svg';
 import PhotoList from 'components/PhotoList';
 
 const PhotoDetailsModal = ({ selectedPhoto, closeModal, photos, favoritePhotosArray, onToggleFavorite }) => {  
+
+
+  const similarPhotos = selectedPhoto.similar_photos
+    ? Object.values(selectedPhoto.similar_photos)
+    : [];
+
+
+
   return (
     <div className="photo-details-modal">
       <button onClick={closeModal}>
@@ -28,11 +36,11 @@ const PhotoDetailsModal = ({ selectedPhoto, closeModal, photos, favoritePhotosAr
       <h1 className="photo-details-modal__header">Similar photos: </h1>
 
       <div className="photo-details-modal__images">
-      <PhotoList
-        photos={photos}
+        <PhotoList
+        photos={similarPhotos}
         favoritePhotosArray={favoritePhotosArray}
         onToggleFavorite={onToggleFavorite}
-      />
+        />
     </div>
 
     </div>
@@ -40,4 +48,3 @@ const PhotoDetailsModal = ({ selectedPhoto, closeModal, photos, favoritePhotosAr
 };
 
 export default PhotoDetailsModal;
-
