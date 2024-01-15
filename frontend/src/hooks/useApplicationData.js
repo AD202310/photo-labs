@@ -12,7 +12,11 @@ const useApplicationData = () => {
   const [state, setState] = useState(initialState);
 
   // Action to update favorite photo ids
-  const updateToFavPhotoIds = (newFavoritePhotosArray) => {
+  const updateToFavPhotoIds = (photoId) => {
+    const newFavoritePhotosArray = state.favoritePhotosArray.includes(photoId)
+      ? state.favoritePhotosArray.filter(id => id !== photoId)
+      : [...state.favoritePhotosArray, photoId];
+  
     setState((prevState) => ({
       ...prevState,
       favoritePhotosArray: newFavoritePhotosArray,

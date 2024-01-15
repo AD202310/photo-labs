@@ -19,11 +19,7 @@ const App = () => {
   };
 
   const handleToggleFavorite = (photoId) => {
-    const newFavoritePhotosArray = state.favoritePhotosArray.includes(photoId)
-      ? state.favoritePhotosArray.filter(id => id !== photoId)
-      : [...state.favoritePhotosArray, photoId];
-
-    updateToFavPhotoIds(newFavoritePhotosArray);
+    updateToFavPhotoIds(photoId);
   };
 
      console.log("App/openModal/state:  ", state.favoritePhotosArray)           //REMOVE
