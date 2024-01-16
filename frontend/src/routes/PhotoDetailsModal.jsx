@@ -6,6 +6,9 @@ import PhotoList from 'components/PhotoList';
 
 const PhotoDetailsModal = ({ selectedPhoto, closeModal, photos, favoritePhotosArray, onToggleFavorite }) => {  
 
+    if (!selectedPhoto) {
+      return null;
+    }
 
   const similarPhotos = selectedPhoto.similar_photos
     ? Object.values(selectedPhoto.similar_photos)

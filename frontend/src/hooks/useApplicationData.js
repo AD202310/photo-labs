@@ -1,52 +1,98 @@
-import { useState } from 'react';
+import { useReducer } from 'react';
+
+// Define action types
+export const ACTIONS = {
+  FAV_PHOTO_ADDED: 'FAV_PHOTO_ADDED',
+  FAV_PHOTO_REMOVED: 'FAV_PHOTO_REMOVED',
+  SET_PHOTO_DATA: 'SET_PHOTO_DATA',
+  SET_TOPIC_DATA: 'SET_TOPIC_DATA',
+  SELECT_PHOTO: 'SELECT_PHOTO',
+  DISPLAY_PHOTO_DETAILS: 'DISPLAY_PHOTO_DETAILS',
+  CLOSE_MODAL: 'CLOSE_MODAL',
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case ACTIONS.FAV_PHOTO_ADDED:
+      return {
+        ...state,
+        favoritePhotosArray: [...state.favoritePhotosArray, action.payload],
+      };
+
+    case ACTIONS.FAV_PHOTO_REMOVED:
+      return {
+        ...state,
+        favoritePhotosArray: state.favoritePhotosArray.filter(
+          (id) => id !== action.payload
+        ),
+      };
+
+    case ACTIONS.SET_PHOTO_DATA:
+      return {
+        ...state,
+      };
+
+    case ACTIONS.SET_TOPIC_DATA:
+      return {
+        ...state,
+      };
+
+    case ACTIONS.SELECT_PHOTO:
+      return {
+        ...state,
+        selectedPhoto: action.payload,
+        isModalOpen: true,
+      };
+
+    case ACTIONS.CLOSE_MODAL:
+      return {
+        ...state,
+        inModalOpen: false,
+        selectedPhoto: null,
+      };
+
+    default:
+      throw new Error(`Tried to reduce with unsupported action type: ${action.type}`);
+  }
+}
 
 const useApplicationData = () => {
-
   const initialState = {
     selectedPhoto: null,
     isModalOpen: false,
     favoritePhotosArray: [],
   };
 
-  // State to manage the application
-  const [state, setState] = useState(initialState);
+  // Use reducer hook
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-  // Action to update favorite photo ids
+  // Action to dispatch favorite photo added
   const updateToFavPhotoIds = (photoId) => {
-    const newFavoritePhotosArray = state.favoritePhotosArray.includes(photoId)
-      ? state.favoritePhotosArray.filter(id => id !== photoId)
-      : [...state.favoritePhotosArray, photoId];
-  
-    setState((prevState) => ({
-      ...prevState,
-      favoritePhotosArray: newFavoritePhotosArray,
-    }));
+    dispatch({ type: ACTIONS.FAV_PHOTO_ADDED, payload: photoId });
   };
 
-  // Action to set selected photo
+  // Action to dispatch favorite photo removed
+  const removeFavPhotoIds = (photoId) => {
+    dispatch({ type: ACTIONS.FAV_PHOTO_REMOVED, payload: photoId });
+  };
+
+  // Action to dispatch set selected photo
   const setPhotoSelected = (selectedPhoto) => {
-    setState((prevState) => ({
-      ...prevState,
-      selectedPhoto,
-      isModalOpen: true
-    }));
+    dispatch({ type: ACTIONS.SELECT_PHOTO, payload: selectedPhoto });
   };
 
-  // Action to close the photo details modal
+  // Action to dispatch close photo details modal
   const onClosePhotoDetailsModal = () => {
-    setState((prevState) => ({
-      ...prevState,
-      selectedPhoto: null,
-      isModalOpen: false,
-    }));
+    dispatch({ type: ACTIONS.CLOSE_MODAL });
   };
 
 
   return {
     state,
     updateToFavPhotoIds,
+    removeFavPhotoIds,
     setPhotoSelected,
-    onClosePhotoDetailsModal
+    onClosePhotoDetailsModal,
   };
 };
 
