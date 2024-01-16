@@ -6,7 +6,11 @@ const TopicList = (props) => {
   return (
     <nav className="top-nav-bar__topic-list">
       {props.topics.map((topicData) => (
-        <TopicListItem key={topicData.id} topic={topicData} />
+        <TopicListItem 
+          key={topicData.id} 
+          topic={topicData}
+          fetchPhotoByTopic={props.fetchPhotoByTopic}
+        />
       ))}
     </nav>
   );

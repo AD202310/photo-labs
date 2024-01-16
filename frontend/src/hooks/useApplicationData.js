@@ -84,7 +84,20 @@ const useApplicationData = () => {
     dispatch({ type: ACTIONS.CLOSE_MODAL });
   };
 
-  // Fetch data using useEffect
+ const fetchPhotosByTopic = async (topicId) => {
+    try {
+      const response = await fetch(`http://localhost:8001/api/topics/photos/${topicId}`);
+      const data = await response.json();
+      
+      // Dispatch an action to set the fetched photos for the topic
+      dispatch({ type: ACTIONS.SET_PHOTO_DATA, payload: data });
+    } catch (error) {
+      console.error('Error fetching photos by topic:', error);
+    }
+  };
+
+
+
   useEffect(() => {
     fetch('http://localhost:8001/api/photos')
       .then(res => res.json())
@@ -95,6 +108,7 @@ const useApplicationData = () => {
         console.error('Error fetching data:', error);
       });
   }, []);
+
 
   useEffect(() => {
     fetch('http://localhost:8001/api/topics')
@@ -107,6 +121,7 @@ const useApplicationData = () => {
       });
   }, []);
 
+ 
 
 
 
@@ -117,6 +132,7 @@ const useApplicationData = () => {
     removeFavPhotoIds,
     setPhotoSelected,
     onClosePhotoDetailsModal,
+    fetchPhotosByTopic
   };
 };
 

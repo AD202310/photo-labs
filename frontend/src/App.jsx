@@ -7,8 +7,14 @@ import useApplicationData from 'hooks/useApplicationData';
 
 const App = () => {
 
-
-  const { state, updateToFavPhotoIds, removeFavPhotoIds, setPhotoSelected, onClosePhotoDetailsModal } = useApplicationData();
+  const { 
+    state, 
+    updateToFavPhotoIds, 
+    removeFavPhotoIds, 
+    setPhotoSelected, 
+    onClosePhotoDetailsModal, 
+    fetchPhotosByTopic 
+  } = useApplicationData();
 
   const openModal = (photo) => {
     setPhotoSelected(photo);
@@ -24,6 +30,12 @@ const App = () => {
     : updateToFavPhotoIds(photoId);
   };
 
+  const handlePhotoByTopic = (topicId) => {
+    fetchPhotosByTopic(topicId)
+  };
+
+
+
   return (
     <>
       <HomeRoute
@@ -32,6 +44,7 @@ const App = () => {
         onPhotoClick={(photo) => openModal(photo)}
         favoritePhotosArray={state.favoritePhotosArray}
         onToggleFavorite={(id) => handleToggleFavorite(id)}
+        fetchPhotoByTopic={(topicId) => handlePhotoByTopic(topicId)}
       />
       {state.isModalOpen &&
         <PhotoDetailsModal
