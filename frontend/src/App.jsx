@@ -8,7 +8,7 @@ import topics from 'mocks/topics';
 import useApplicationData from 'hooks/useApplicationData';
 
 const App = () => {
-  const { state, updateToFavPhotoIds, setPhotoSelected, onClosePhotoDetailsModal } = useApplicationData();
+  const { state, updateToFavPhotoIds, removeFavPhotoIds, setPhotoSelected, onClosePhotoDetailsModal } = useApplicationData();
 
   const openModal = (photo) => {
     setPhotoSelected(photo);
@@ -19,7 +19,9 @@ const App = () => {
   };
 
   const handleToggleFavorite = (photoId) => {
-    updateToFavPhotoIds(photoId);
+    state.favoritePhotosArray.includes(photoId)
+    ? removeFavPhotoIds(photoId)
+    : updateToFavPhotoIds(photoId);
   };
 
      console.log("App/openModal/state:  ", state.favoritePhotosArray)           //REMOVE
