@@ -4,8 +4,8 @@ import { useReducer } from 'react';
 export const ACTIONS = {
   FAV_PHOTO_ADDED: 'FAV_PHOTO_ADDED',
   FAV_PHOTO_REMOVED: 'FAV_PHOTO_REMOVED',
-  SET_PHOTO_DATA: 'SET_PHOTO_DATA',
-  SET_TOPIC_DATA: 'SET_TOPIC_DATA',
+  // SET_PHOTO_DATA: 'SET_PHOTO_DATA',
+  // SET_TOPIC_DATA: 'SET_TOPIC_DATA',
   SELECT_PHOTO: 'SELECT_PHOTO',
   DISPLAY_PHOTO_DETAILS: 'DISPLAY_PHOTO_DETAILS',
   CLOSE_MODAL: 'CLOSE_MODAL',
@@ -47,7 +47,7 @@ function reducer(state, action) {
     case ACTIONS.CLOSE_MODAL:
       return {
         ...state,
-        inModalOpen: false,
+        isModalOpen: false,
         selectedPhoto: null,
       };
 
