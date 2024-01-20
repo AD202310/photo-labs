@@ -1,19 +1,28 @@
 import React from "react";
-import "styles/TopicList.scss";
 import TopicListItem from "./TopicListItem";
+import "../styles/TopicList.scss";
 
-const TopicList = (props) => {
+
+const TopicList = ({ topics, getPhotosByTopic }) => {
+  // Mapping through the topics array to create TopicListItem components
+  const topicList = topics.map(topic => {
+    return (
+      <TopicListItem 
+        topic={topic} 
+        key={topic.id} 
+        getPhotosByTopic={getPhotosByTopic} 
+      />
+    );
+  });
+
   return (
-    <nav className="top-nav-bar__topic-list">
-      {props.topics.map((topicData) => (
-        <TopicListItem 
-          key={topicData.id} 
-          topic={topicData}
-          fetchPhotoByTopic={props.fetchPhotoByTopic}
-        />
-      ))}
-    </nav>
+    // Container div for the TopicList component
+    <div className="top-nav-bar__topic-list" >
+      {/* Rendering the list of TopicListItem components */}
+      {topicList}
+    </div>
   );
 };
+
 
 export default TopicList;

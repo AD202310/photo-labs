@@ -1,20 +1,39 @@
 import React from 'react';
-import '../styles/TopNavigationBar.scss'
 import TopicList from './TopicList';
 import FavBadge from './FavBadge';
+import '../styles/TopNavigationBar.scss';
 
-const TopNavigationBar = (props) => {
-  const displayAlert = props.favoritePhotosArray.length > 0;
+
+const TopNavigationBar = (
+  { 
+    dark, 
+    setDark, 
+    getAllPhotos, 
+    topics, 
+    getPhotosByTopic, 
+    isFavPhotoExist 
+  }) => {
+
   return (
+    // Main container div for the TopNavigationBar component
     <div className="top-nav-bar">
-      <span className="top-nav-bar__logo">PhotoLabs</span>
+      {/* Logo for the application, clicking on it triggers the fetching of all photos */}
+      <span className="top-nav-bar__logo" onClick={getAllPhotos}>PhotoLabs</span>
+
+      {/* TopicList component for displaying a list of topics */}
       <TopicList 
-        topics={props.topics}
-        fetchPhotoByTopic={props.fetchPhotoByTopic}
+        topics={topics} 
+        getPhotosByTopic={getPhotosByTopic} 
       />
-      <FavBadge favoritePhotos={props.favoritePhotosArray} displayAlert={displayAlert}/>
+
+      {/* FavBadge component for displaying a badge indicating the existence of liked photos */}
+      <FavBadge 
+        dark={dark} 
+        setDark={setDark} 
+        isFavPhotoExist={isFavPhotoExist} 
+      />
     </div>
   );
-}
+};
 
 export default TopNavigationBar;

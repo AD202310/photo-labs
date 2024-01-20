@@ -1,11 +1,15 @@
+@import '_color-themes';
+
 .photo-list__item {
+  background-color: $white;
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.1);
   margin: 24px;
   padding: 8px;
-  border-width: 0.5px;
-  border-color: lightgray;
-  border-style: solid;
   border-radius: 8px;
   max-width: fit-content;
+}
+.photo-list__item.dark {
+  background-color: $dark-grey;
 }
 
 .photo-list__image {

@@ -4,9 +4,9 @@
   justify-content: space-between;
   padding: 8px;
   align-items: center;
-  -webkit-box-shadow: 0 4px 6px -6px #222;
-  -moz-box-shadow: 0 4px 6px -6px #222;
-  box-shadow: 0 4px 6px -6px #222;
+  -webkit-box-shadow: 0 4px 6px -6px #000000;
+  -moz-box-shadow: 0 4px 6px -6px #000000;
+  box-shadow: 0 4px 6px -6px #000000;
   height: 72px;
 }
 
@@ -14,7 +14,7 @@
   text-decoration: overline;
   font-weight: 500;
   font-size: 24px;
-  color: #111;
   text-underline-position: auto;
   margin-left: 24px;
+  cursor: pointer;
 }

@@ -3,59 +3,61 @@ import './App.scss';
 import './styles/TopNavigationBar.scss';
 import HomeRoute from 'routes/HomeRoute';
 import PhotoDetailsModal from 'routes/PhotoDetailsModal';
-import useApplicationData from 'hooks/useApplicationData';
+import { useApplicationData } from 'hooks/useApplicationData';
 
 const App = () => {
-
-  const { 
-    state, 
-    updateToFavPhotoIds, 
-    removeFavPhotoIds, 
-    setPhotoSelected, 
-    onClosePhotoDetailsModal, 
-    fetchPhotosByTopic 
+  // Destructuring values from the custom hook useApplicationData
+  const {
+    state: {
+      likes,
+      selectedPhoto,
+      modal,
+      photoData,
+      topicData,
+      dark
+    },
+    updateToFavPhotoIds,
+    setPhotoSelected,
+    getPhotosByTopic,
+    getAllPhotos,
+    onClosePhotoDetailsModal,
+    setDark
   } = useApplicationData();
 
-  const openModal = (photo) => {
-    setPhotoSelected(photo);
-  };
+  // Function to check if a photo is liked
+  const isLiked = photoId => likes.includes(photoId);
 
-  const closeModal = () => {
-    onClosePhotoDetailsModal();
-  };
-
-  const handleToggleFavorite = (photoId) => {
-    state.favoritePhotosArray.includes(photoId)
-    ? removeFavPhotoIds(photoId)
-    : updateToFavPhotoIds(photoId);
-  };
-
-  const handlePhotoByTopic = (topicId) => {
-    fetchPhotosByTopic(topicId)
-  };
-
-
+  // Check if there are any liked photos
+  const isFavPhotoExist = likes.length > 0;
 
   return (
-    <>
+    // Main App component
+    <div className={`App ${dark}`}>
+      {/* HomeRoute component with various props */}
       <HomeRoute
-        photos={state.photoData}
-        topics={state.topicData}
-        onPhotoClick={(photo) => openModal(photo)}
-        favoritePhotosArray={state.favoritePhotosArray}
-        onToggleFavorite={(id) => handleToggleFavorite(id)}
-        fetchPhotoByTopic={(topicId) => handlePhotoByTopic(topicId)}
+        isFavPhotoExist={isFavPhotoExist}
+        isLiked={isLiked}
+        toggleLike={updateToFavPhotoIds}
+        photos={photoData}
+        topics={topicData}
+        getPhotosByTopic={getPhotosByTopic}
+        getAllPhotos={getAllPhotos}
+        showModal={setPhotoSelected}
+        dark={dark}
+        setDark={setDark}
       />
-      {state.isModalOpen &&
+      
+      {/* Conditional rendering of PhotoDetailsModal component */}
+      {modal &&
         <PhotoDetailsModal
-          selectedPhoto={state.selectedPhoto}
-          closeModal={closeModal}
-          photos={state.photoData}
-          favoritePhotosArray={state.favoritePhotosArray}
-          onToggleFavorite={(id) => handleToggleFavorite(id)}
-        />
-      }
-    </>
+          showModal={setPhotoSelected}
+          hideModal={onClosePhotoDetailsModal}
+          selectedPhoto={selectedPhoto}
+          isLiked={isLiked}
+          toggleLike={updateToFavPhotoIds}
+          dark={dark}
+        />}
+    </div>
   );
 };
 

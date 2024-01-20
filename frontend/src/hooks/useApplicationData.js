@@ -1,139 +1,111 @@
 import React, { useReducer, useEffect, useState } from 'react';
 
-export const ACTIONS = {
-  FAV_PHOTO_ADDED: 'FAV_PHOTO_ADDED',
-  FAV_PHOTO_REMOVED: 'FAV_PHOTO_REMOVED',
-  SET_PHOTO_DATA: 'SET_PHOTO_DATA',
-  SET_TOPIC_DATA: 'SET_TOPIC_DATA',
-  SELECT_PHOTO: 'SELECT_PHOTO',
-  DISPLAY_PHOTO_DETAILS: 'DISPLAY_PHOTO_DETAILS',
-  CLOSE_MODAL: 'CLOSE_MODAL',
+// Initial state for the application
+const INITIAL_STATE = {
+  likes: [],
+  selectedPhoto: null,
+  selectedTopic: null,
+  modal: false,
+  photoData: [],
+  topicData: [],
+  dark: ''
 };
 
-function reducer(state, action) {
+// Action types for the reducer
+const ACTIONS = {
+  TOGGLE_LIKE: 'TOGGLE_LIKE',
+  SELECT_PHOTO: 'SELECT_PHOTO',
+  SELECT_TOPIC: 'SELECT_TOPIC',
+  CLOSE_PHOTO: 'CLOSE_PHOTO',
+  SET_PHOTO_DATA: 'SET_PHOTO_DATA',
+  SET_TOPIC_DATA: 'SET_TOPIC_DATA',
+  TOGGLE_DARK_MODE: 'TOGGLE_DARK_MODE'
+};
+
+// Reducer function to manage state changes based on actions
+const reducer = (state, action) => {
   switch (action.type) {
-    case ACTIONS.FAV_PHOTO_ADDED:
-      return {
-        ...state,
-        favoritePhotosArray: [...state.favoritePhotosArray, action.payload],
+    case ACTIONS.TOGGLE_LIKE:
+      const photoId = action.payload;
+      if (state.likes.includes(photoId)) {
+        return { ...state, likes: state.likes.filter(id => id !== photoId) };
       };
-
-    case ACTIONS.FAV_PHOTO_REMOVED:
-      return {
-        ...state,
-        favoritePhotosArray: state.favoritePhotosArray.filter(
-          (id) => id !== action.payload
-        ),
-      };
-
-    case ACTIONS.SET_PHOTO_DATA:
-      return {
-        ...state, photoData: action.payload
-      };
-
-
-    case ACTIONS.SET_TOPIC_DATA:
-      return {
-        ...state, topicData: action.payload
-      };
+      return { ...state, likes: [...state.likes, photoId] };
 
     case ACTIONS.SELECT_PHOTO:
-      return {
-        ...state,
-        selectedPhoto: action.payload,
-        isModalOpen: true,
-      };
+      return { ...state, modal: true, selectedPhoto: action.payload };
 
-    case ACTIONS.CLOSE_MODAL:
-      return {
-        ...state,
-        isModalOpen: false,
-        selectedPhoto: null,
-      };
+    case ACTIONS.SELECT_TOPIC:
+      return { ...state, selectedTopic: action.payload };
+
+    case ACTIONS.CLOSE_PHOTO:
+      return { ...state, modal: false, selectedPhoto: null };
+
+    case ACTIONS.SET_PHOTO_DATA:
+      return { ...state, photoData: action.payload };
+
+    case ACTIONS.SET_TOPIC_DATA:
+      return { ...state, topicData: action.payload };
+
+    case ACTIONS.TOGGLE_DARK_MODE:
+      if (state.dark === 'dark') {
+        return { ...state, dark: '' };
+      }
+      return { ...state, dark: 'dark' };
 
     default:
       throw new Error(`Tried to reduce with unsupported action type: ${action.type}`);
   }
-}
+};
 
+// Custom hook for managing application state
+export const useApplicationData = () => {
+  // useReducer hook to manage state using the reducer function
+  const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
 
-const useApplicationData = () => {
-  const initialState = {
-    selectedPhoto: null,
-    isModalOpen: false,
-    favoritePhotosArray: [],
-    photoData: [],
-    topicData: []
+  // Function to fetch all photos
+  const getAllPhotos = () => {
+    fetch(`/api/photos`)
+      .then(res => res.json())
+      .then(photoData => dispatch({ type: ACTIONS.SET_PHOTO_DATA, payload: photoData }));
   };
 
-  const [state, dispatch] = useReducer(reducer, initialState);
+  // useEffect hook to fetch all photos once when the component mounts
+  useEffect(() => {
+    getAllPhotos();
+  }, []);
 
-  const updateToFavPhotoIds = (photoId) => {
-    dispatch({ type: ACTIONS.FAV_PHOTO_ADDED, payload: photoId });
-  };
+  // useEffect hook to fetch all topics once when the component mounts
+  useEffect(() => {
+    fetch(`/api/topics`)
+      .then(res => res.json())
+      .then(topicData => dispatch({ type: ACTIONS.SET_TOPIC_DATA, payload: topicData }));
+  }, []);
 
-  const removeFavPhotoIds = (photoId) => {
-    dispatch({ type: ACTIONS.FAV_PHOTO_REMOVED, payload: photoId });
-  };
-
-  const setPhotoSelected = (selectedPhoto) => {
-    dispatch({ type: ACTIONS.SELECT_PHOTO, payload: selectedPhoto });
-  };
-
-  const onClosePhotoDetailsModal = () => {
-    dispatch({ type: ACTIONS.CLOSE_MODAL });
-  };
-
- const fetchPhotosByTopic = async (topicId) => {
-    try {
-      const response = await fetch(`http://localhost:8001/api/topics/photos/${topicId}`);
-      const data = await response.json();
-      
-      // Dispatch an action to set the fetched photos for the topic
-      dispatch({ type: ACTIONS.SET_PHOTO_DATA, payload: data });
-    } catch (error) {
-      console.error('Error fetching photos by topic:', error);
+  // useEffect hook to fetch photos based on the selected topic
+  useEffect(() => {
+    if (state.selectedTopic) {
+      fetch(`/api/topics/photos/${state.selectedTopic}`)
+        .then(res => res.json())
+        .then(photosByTopic => dispatch({ type: ACTIONS.SET_PHOTO_DATA, payload: photosByTopic }));
     }
-  };
+  }, [state.selectedTopic]);
 
+  // Functions to dispatch actions for various state changes
+  const updateToFavPhotoIds = photoId => dispatch({ type: ACTIONS.TOGGLE_LIKE, payload: photoId });
+  const setPhotoSelected = photo => dispatch({ type: ACTIONS.SELECT_PHOTO, payload: photo });
+  const getPhotosByTopic = topicId => dispatch({ type: ACTIONS.SELECT_TOPIC, payload: topicId });
+  const onClosePhotoDetailsModal = () => dispatch({ type: ACTIONS.CLOSE_PHOTO });
+  const setDark = () => dispatch({ type: ACTIONS.TOGGLE_DARK_MODE });
 
-
-  useEffect(() => {
-    fetch('http://localhost:8001/api/photos')
-      .then(res => res.json())
-      .then(data => {
-        dispatch({ type: ACTIONS.SET_PHOTO_DATA, payload: data });
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-  }, []);
-
-
-  useEffect(() => {
-    fetch('http://localhost:8001/api/topics')
-      .then(res => res.json())
-      .then(data => {
-        dispatch({ type: ACTIONS.SET_TOPIC_DATA, payload: data });
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-  }, []);
-
- 
-
-
-
-  // Return state and actions
+  // Return the state and functions for state management
   return {
     state,
     updateToFavPhotoIds,
-    removeFavPhotoIds,
     setPhotoSelected,
+    getPhotosByTopic,
+    getAllPhotos,
     onClosePhotoDetailsModal,
-    fetchPhotosByTopic
+    setDark
   };
 };
-
-export default useApplicationData;
