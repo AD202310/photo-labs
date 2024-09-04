@@ -8,7 +8,8 @@ import MoonIcon from './MoonIcon';
 const FavBadge = (
   { dark, 
     setDark, 
-    isFavPhotoExist 
+    isFavPhotoExist,
+    getFavPhotos
   }) => {
   return (
     // Container div for the FavBadge component
@@ -17,7 +18,8 @@ const FavBadge = (
       <FavIcon 
         selected={true} 
         dark={dark}
-        displayAlert={!!isFavPhotoExist} 
+        displayAlert={!!isFavPhotoExist}
+        getFavPhotos={getFavPhotos} 
       />
 
       {/* Container div for the dark mode button */}

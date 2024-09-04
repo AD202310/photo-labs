@@ -19,7 +19,8 @@ const ACTIONS = {
   CLOSE_PHOTO: 'CLOSE_PHOTO',
   SET_PHOTO_DATA: 'SET_PHOTO_DATA',
   SET_TOPIC_DATA: 'SET_TOPIC_DATA',
-  TOGGLE_DARK_MODE: 'TOGGLE_DARK_MODE'
+  TOGGLE_DARK_MODE: 'TOGGLE_DARK_MODE',
+  SELECT_FAV: 'SELECT_FAV'
 };
 
 // Reducer function to manage state changes based on actions
@@ -52,6 +53,12 @@ const reducer = (state, action) => {
         return { ...state, dark: '' };
       }
       return { ...state, dark: 'dark' };
+    
+    case ACTIONS.SELECT_FAV:
+      const favPhotosId = state.likes;
+      const photoData = state.photoData;
+      const favPhotosOnly = photoData.filter(photo => favPhotosId.includes(photo.id));
+      return {...state, photoData: favPhotosOnly};
 
     default:
       throw new Error(`Tried to reduce with unsupported action type: ${action.type}`);
@@ -97,6 +104,7 @@ export const useApplicationData = () => {
   const getPhotosByTopic = topicId => dispatch({ type: ACTIONS.SELECT_TOPIC, payload: topicId });
   const onClosePhotoDetailsModal = () => dispatch({ type: ACTIONS.CLOSE_PHOTO });
   const setDark = () => dispatch({ type: ACTIONS.TOGGLE_DARK_MODE });
+  const getFavPhotos = () => dispatch({ type: ACTIONS.SELECT_FAV });
 
   // Return the state and functions for state management
   return {
@@ -106,6 +114,7 @@ export const useApplicationData = () => {
     getPhotosByTopic,
     getAllPhotos,
     onClosePhotoDetailsModal,
-    setDark
+    setDark,
+    getFavPhotos
   };
 };

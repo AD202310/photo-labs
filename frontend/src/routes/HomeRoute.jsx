@@ -15,7 +15,8 @@ const HomeRoute = (
     getPhotosByTopic, 
     showModal, 
     dark, 
-    setDark 
+    setDark,
+    getFavPhotos
   }) => {
   return (
     // Main container div for the HomeRoute component
@@ -28,6 +29,7 @@ const HomeRoute = (
         getPhotosByTopic={getPhotosByTopic} 
         dark={dark} 
         setDark={setDark}
+        getFavPhotos={getFavPhotos}
       />
       
       {/* PhotoList component with various props */}

@@ -21,7 +21,8 @@ const App = () => {
     getPhotosByTopic,
     getAllPhotos,
     onClosePhotoDetailsModal,
-    setDark
+    setDark,
+    getFavPhotos
   } = useApplicationData();
 
   // Function to check if a photo is liked
@@ -45,6 +46,7 @@ const App = () => {
         showModal={setPhotoSelected}
         dark={dark}
         setDark={setDark}
+        getFavPhotos={getFavPhotos}
       />
       
       {/* Conditional rendering of PhotoDetailsModal component */}

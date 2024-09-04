@@ -11,7 +11,8 @@ const TopNavigationBar = (
     getAllPhotos, 
     topics, 
     getPhotosByTopic, 
-    isFavPhotoExist 
+    isFavPhotoExist,
+    getFavPhotos
   }) => {
 
   return (
@@ -30,7 +31,8 @@ const TopNavigationBar = (
       <FavBadge 
         dark={dark} 
         setDark={setDark} 
-        isFavPhotoExist={isFavPhotoExist} 
+        isFavPhotoExist={isFavPhotoExist}
+        getFavPhotos={getFavPhotos} 
       />
     </div>
   );
